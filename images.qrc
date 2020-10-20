@@ -1,0 +1,18 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>images/about.ico</file>
+        <file>images/exit.ico</file>
+        <file>images/new_file.ico</file>
+        <file>images/open_file.ico</file>
+        <file>images/save.ico</file>
+        <file>images/save_as.ico</file>
+        <file>images/add_column.ico</file>
+        <file>images/add_row.ico</file>
+        <file>images/remove_column.ico</file>
+        <file>images/remove_row.ico</file>
+        <file>images/ukraine_flag.ico</file>
+        <file>images/united_kingdom_flag.ico</file>
+        <file>images/mini_spreadsheet.ico</file>
+        <file>images/splash_screen.png</file>
+    </qresource>
+</RCC>

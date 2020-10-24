@@ -8,9 +8,7 @@ QVector<Token> Lexer::GetTokens(const QString& line){
     QVector<Token> tokens;
     QString token_value;
     for(const QChar& ch : line){
-        if(IsWhitespace(ch)){
-            continue;
-        }else if(IsOperator(ch) or IsBracket(ch)){
+        if(IsWhitespace(ch) or IsBracket(ch) or IsOperator(ch)){
             if(!token_value.isEmpty()){
                 TokenType token_type = GetTokenType(token_value);
                 tokens.append(Token(token_type,
@@ -20,7 +18,7 @@ QVector<Token> Lexer::GetTokens(const QString& line){
                 tokens.append(Token(TokenType::kLeftBracket, ch));
             }else if(ch == ')'){
                 tokens.append(Token(TokenType::kRightBracket, ch));
-            }else{
+            }else if(IsOperator(ch)){
                 tokens.append(Token(TokenType::kOperator, ch));
             }
 
@@ -66,5 +64,3 @@ bool Lexer::IsOperator(const QChar& ch){
 bool Lexer::IsBracket(const QChar& ch){
     return ch == '(' or ch == ')';
 }
-
-

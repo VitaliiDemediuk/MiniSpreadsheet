@@ -3,6 +3,11 @@
 #include <QApplication>
 #include <QSplashScreen>
 
+#include <iostream>
+#include <string>
+#include "parser.h"
+#include <QSharedPointer>
+
 int main(int argc, char *argv[])
 {
     {

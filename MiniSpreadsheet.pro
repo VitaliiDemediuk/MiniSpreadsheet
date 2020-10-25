@@ -25,7 +25,8 @@ SOURCES += \
     lexer/lexer.cpp \
     lexer/token.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    parser/parser.cpp
 
 HEADERS += \
     expression_nodes/celllinknode.h \
@@ -45,7 +46,8 @@ HEADERS += \
     expression_nodes/unaryplusnode.h \
     lexer/lexer.h \
     lexer/token.h \
-    mainwindow.h
+    mainwindow.h \
+    parser/parser.h
 
 FORMS += \
     mainwindow.ui
@@ -61,3 +63,4 @@ RESOURCES += \
 INCLUDEPATH += \
     lexer \
     expression_nodes \
+    parser

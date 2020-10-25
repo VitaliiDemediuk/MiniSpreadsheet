@@ -13,6 +13,9 @@ private:
     static TokenType GetTokenType(const QString& token_value);
     static bool IsWhitespace(const QChar& ch);
     static bool IsOperator(const QChar& ch);
+    static bool IsOperator1(const QChar& ch);
+    static bool IsOperator2(const QChar& ch);
+    static bool IsOperator3(const QChar& ch);
     static bool IsBracket(const QChar& ch);
 };
 

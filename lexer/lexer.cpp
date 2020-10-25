@@ -18,8 +18,12 @@ QVector<Token> Lexer::GetTokens(const QString& line){
                 tokens.append(Token(TokenType::kLeftBracket, ch));
             }else if(ch == ')'){
                 tokens.append(Token(TokenType::kRightBracket, ch));
-            }else if(IsOperator(ch)){
-                tokens.append(Token(TokenType::kOperator, ch));
+            }else if(IsOperator1(ch)){
+                tokens.append(Token(TokenType::kOperator1, ch));
+            }else if(IsOperator2(ch)){
+                tokens.append(Token(TokenType::kOperator2, ch));
+            }else if(IsOperator3(ch)){
+                tokens.append(Token(TokenType::kOperator3, ch));
             }
 
         }else{
@@ -57,7 +61,21 @@ bool Lexer::IsWhitespace(const QChar& ch){
 }
 
 bool Lexer::IsOperator(const QChar& ch){
-    static const QSet<QChar> operators_set{'+', '-', '*', '/', '^'};
+    return IsOperator1(ch) or IsOperator2(ch) or IsOperator3(ch);
+}
+
+bool Lexer::IsOperator1(const QChar& ch){
+    static const QSet<QChar> operators_set{'+', '-'};
+    return operators_set.contains(ch);
+}
+
+bool Lexer::IsOperator2(const QChar& ch){
+    static const QSet<QChar> operators_set{'*', '/'};
+    return operators_set.contains(ch);
+}
+
+bool Lexer::IsOperator3(const QChar& ch){
+    static const QSet<QChar> operators_set{'^'};
     return operators_set.contains(ch);
 }
 

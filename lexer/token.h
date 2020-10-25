@@ -8,7 +8,9 @@ enum class TokenType{
     kCellLink,
     kInc,
     kDec,
-    kOperator,
+    kOperator1,
+    kOperator2,
+    kOperator3,
     kLeftBracket,
     kRightBracket
 };

@@ -14,8 +14,12 @@ cpp_int BinaryPowerNode::bin_pow(const cpp_int& base, const cpp_int& index) cons
     } else if(index == 1){
         return base;
     }else if(index % 2 == 0){
-        return bin_pow(base, index/2);
+        return sqrt(bin_pow(base, index/2));
     }else{
         return base*bin_pow(base, index-1);
     }
+}
+
+cpp_int BinaryPowerNode::sqrt(const cpp_int& base) const{
+    return base*base;
 }

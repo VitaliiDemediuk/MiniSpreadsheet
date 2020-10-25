@@ -12,6 +12,7 @@ public:
     cpp_int Calculate() const override;
 public:
     cpp_int bin_pow(const cpp_int& base, const cpp_int& index) const;
+    cpp_int sqrt(const cpp_int& base) const;
 };
 
 #endif // BINARYPOWERNODE_H

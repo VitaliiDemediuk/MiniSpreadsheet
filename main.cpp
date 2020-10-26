@@ -8,6 +8,10 @@
 #include "parser.h"
 #include <QSharedPointer>
 
+#include <boost/multiprecision/cpp_int.hpp>
+
+using boost::multiprecision::cpp_int;
+
 int main(int argc, char *argv[])
 {
     {

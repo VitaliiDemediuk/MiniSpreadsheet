@@ -18,7 +18,7 @@
 #include "incfunctionnode.h"
 #include "decfunctionnode.h"
 #include "numbernode.h"
-#include "celllinknode.h"
+#include "cellreferencenode.h"
 
 QSharedPointer<Node> Parser::GetTree(const QString& text){
     int pos = 0;
@@ -88,8 +88,8 @@ QSharedPointer<Node> Parser::TermParse(const QVector<Token>& tokens, int& pos){
     QSharedPointer<Node> result;
     if(pos < tokens.size() and tokens[pos].GetTokenType() == TokenType::kNumber){
         result = QSharedPointer<Node>(new NumberNode(tokens[pos].GetValue()));
-    }else if(pos < tokens.size() and tokens[pos].GetTokenType() == TokenType::kCellLink){
-        result = QSharedPointer<Node>(new CellLinkNode(tokens[pos].GetValue()));
+    }else if(pos < tokens.size() and tokens[pos].GetTokenType() == TokenType::kCellReference){
+        result = QSharedPointer<Node>(new CellReferenceNode(tokens[pos].GetValue()));
     }else if(pos < tokens.size() and tokens[pos].GetTokenType() == TokenType::kOperator1){
         QString operator_value = tokens[pos].GetValue();
         QSharedPointer<Node> expr = TermParse(tokens, ++pos);

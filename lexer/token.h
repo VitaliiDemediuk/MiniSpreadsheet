@@ -5,7 +5,7 @@
 
 enum class TokenType{
     kNumber = 0,
-    kCellLink,
+    kCellReference,
     kInc,
     kDec,
     kOperator1,

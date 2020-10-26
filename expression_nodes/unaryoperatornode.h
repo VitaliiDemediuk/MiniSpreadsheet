@@ -7,7 +7,9 @@
 class UnaryOperatorNode : public Node{
 public:
     explicit UnaryOperatorNode(QSharedPointer<Node> expr);
-    virtual cpp_int Calculate() const = 0;
+    virtual cpp_int Calculate() const override = 0;
+    void AddReference(size_t row, size_t column) const override;
+    void RemoveReference(size_t row, size_t column) const override;
 protected:
     QSharedPointer<Node> expr_;
 };

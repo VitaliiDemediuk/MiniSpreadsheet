@@ -46,7 +46,7 @@ TokenType Lexer::GetTokenType(const QString& token_value){
     }else if(token_value == "dec"){
         return TokenType::kDec;
     }else if(cell_link_reg_exp.exactMatch(token_value)){
-        return TokenType::kCellLink;
+        return TokenType::kCellReference;
     }else if(number_reg_exp.exactMatch(token_value)){
         return TokenType::kNumber;
     }else{

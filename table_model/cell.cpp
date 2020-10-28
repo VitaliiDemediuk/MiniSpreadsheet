@@ -3,6 +3,7 @@
 #include <tuple>
 #include "numbernode.h"
 #include "parser.h"
+#include <QDebug>
 
 //CellCoordinates
 Cell::CellCoordinates::CellCoordinates(int row, int column) :
@@ -39,7 +40,12 @@ cpp_int Cell::GetValue() const{
 
 void Cell::ChangeText(const QString& text){
     text_ = text;
-    tree_ = Parser::GetTree(text);
+    if(!text_.isEmpty()){
+        tree_ = Parser::GetTree(text_);
+    }else{
+        tree_ = QSharedPointer<Node>(new NumberNode(0));
+    }
+    qDebug() << text_ << '\n';
 }
 
 void Cell::AddReferringCell(int row, int column){

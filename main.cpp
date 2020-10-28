@@ -25,6 +25,7 @@ int main(int argc, char *argv[])
     splash->setPixmap(QPixmap(":/img/images/splash_screen.png"));
     splash->show();
     MainWindow w;
+    w.PrepareTable();
     w.show();
     splash->finish(&w);
     delete splash;

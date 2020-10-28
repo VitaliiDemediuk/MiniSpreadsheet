@@ -1,5 +1,5 @@
-#ifndef CELLLINKNODE_H
-#define CELLLINKNODE_H
+#ifndef CELLREFERENCENODE_H
+#define CELLREFERENCENODE_H
 
 #include "node.h"
 #include <QString>
@@ -16,4 +16,4 @@ private:
     size_t bin_pow(const size_t& base, const size_t& index) const;
 };
 
-#endif // CELLLINKNODE_H
+#endif // CELLREFERENCENODE_H

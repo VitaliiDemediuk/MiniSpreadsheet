@@ -39,13 +39,13 @@ QVector<Token> Lexer::GetTokens(const QString& line){
 }
 
 TokenType Lexer::GetTokenType(const QString& token_value){
-    static const QRegExp cell_link_reg_exp("[A-Z]+[1-9][0-9]*");
-    static const QRegExp number_reg_exp("[1-9][0-9]*");
+    static const QRegExp cell_ref_reg_exp("[A-Z]+[1-9][0-9]*");
+    static const QRegExp number_reg_exp("0|[1-9][0-9]*");
     if(token_value == "inc"){
         return TokenType::kInc;
     }else if(token_value == "dec"){
         return TokenType::kDec;
-    }else if(cell_link_reg_exp.exactMatch(token_value)){
+    }else if(cell_ref_reg_exp.exactMatch(token_value)){
         return TokenType::kCellReference;
     }else if(number_reg_exp.exactMatch(token_value)){
         return TokenType::kNumber;

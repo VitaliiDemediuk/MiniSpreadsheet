@@ -11,19 +11,20 @@ public:
     void AddColumn();
     void RemoveRow();
     void RemoveColumn();
-    size_t GetRowCount();
-    size_t GetColumnCount();
-    Cell& GetCell(size_t row, size_t column);
-//    void SaveTable();
-//    void OpenTable();
+    int GetRowCount();
+    int GetColumnCount();
+    Cell& GetCell(int row, int column);
+    void SaveTable(const QString& file_path);
+    void NewTable(int row_count = 0, int column_count = 0);
+    void ClearTable();
+    TableSingleton(const TableSingleton&) = delete;
+    void operator=(TableSingleton const& ) = delete;
 private:
     TableSingleton();
-//    TableSingleton( const TableSingleton&);
-//    TableSingleton& operator=( TableSingleton& );
 
     QVector<QVector<Cell>> table_;
-    size_t row_count_;
-    size_t column_count_;
+    int row_count_ = 0;
+    int column_count_ = 0;
 };
 
 #endif // TABLESINGLETON_H

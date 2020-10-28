@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include "tablesingleton.h"
+#include <QDebug>
 
 CellReferenceNode::CellReferenceNode(const QString& cell_link): row_(0), column_(0){
     int pos = cell_link.size()-1;
@@ -12,20 +13,26 @@ CellReferenceNode::CellReferenceNode(const QString& cell_link): row_(0), column_
     for(int i = 0; pos >= 0; ++i, --pos){
         column_ += (cell_link[pos].unicode()-A_unicode)*bin_pow(26, i);
     }
+    --row_;
+
+    qDebug() << row_ << ' ' << column_ << "\n";
 }
 
 cpp_int CellReferenceNode::Calculate() const{
-    TableSingleton table = TableSingleton::getInstance();
+    TableSingleton& table = TableSingleton::getInstance();
+    qDebug() << "----" << "\n";
+    qDebug() << row_ << ' ' << column_ << "\n";
+    qDebug() << table.GetCell(row_, column_).GetValue().str().c_str() << "\n";
     return table.GetCell(row_, column_).GetValue();
 }
 
 void CellReferenceNode::AddReference(size_t row, size_t column) const{
-    TableSingleton table = TableSingleton::getInstance();
+    TableSingleton& table = TableSingleton::getInstance();
     table.GetCell(row_, column_).AddReferringCell(row, column);
 }
 
 void CellReferenceNode::RemoveReference(size_t row, size_t column) const{
-    TableSingleton table = TableSingleton::getInstance();
+    TableSingleton& table = TableSingleton::getInstance();
     table.GetCell(row_, column_).RemoveReferringCell(row, column);
 }
 

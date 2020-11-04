@@ -17,6 +17,8 @@ public:
     void SaveTable(const QString& file_path);
     void NewTable(int row_count = 0, int column_count = 0);
     void ClearTable();
+    bool IsLastRowEmpty();
+    bool IsLastColumnEmpty();
     TableSingleton(const TableSingleton&) = delete;
     void operator=(TableSingleton const& ) = delete;
 private:

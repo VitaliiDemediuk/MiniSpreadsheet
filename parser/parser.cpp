@@ -19,26 +19,40 @@
 #include "decfunctionnode.h"
 #include "numbernode.h"
 #include "cellreferencenode.h"
+#include "exceptionnode.h"
 
 QSharedPointer<Node> Parser::GetTree(const QString& text){
     int pos = 0;
     QVector<Token> tokens = Lexer::GetTokens(text);
+    for(auto& token : tokens){
+        if(token.GetTokenType() == TokenType::kInvalidToken){
+            return QSharedPointer<Node>(new ExceptionNode("Invalid Token!"));
+        }
+    }
     return ExpressionParse(tokens, pos);
 }
 
 QSharedPointer<Node> Parser::ExpressionParse(const QVector<Token>& tokens, int& pos){
     QSharedPointer<Node> result;
     QSharedPointer<Node> left_expr = MultiplicationParse(tokens, pos);
-    if(pos+1 < tokens.size() and tokens[pos+1].GetTokenType() == TokenType::kOperator1){
-        ++pos;
-        QString operator_value = tokens[pos] .GetValue();
-        QSharedPointer<Node> right_expr = ExpressionParse(tokens, ++pos);
-        if(operator_value == "+"){
-            result = QSharedPointer<Node>(new BinaryPlusNode(left_expr, right_expr));
-        }else if(operator_value == "-"){
-            result = QSharedPointer<Node>(new BinaryMinusNode(left_expr, right_expr));
+    if(!left_expr->IsException()){
+        if(pos+1 < tokens.size() and tokens[pos+1].GetTokenType() == TokenType::kOperator1){
+            ++pos;
+            QString operator_value = tokens[pos].GetValue();
+            QSharedPointer<Node> right_expr = ExpressionParse(tokens, ++pos);
+            if(!right_expr->IsException()){
+                if(operator_value == "+"){
+                    result = QSharedPointer<Node>(new BinaryPlusNode(left_expr, right_expr));
+                }else if(operator_value == "-"){
+                    result = QSharedPointer<Node>(new BinaryMinusNode(left_expr, right_expr));
+                }else{
+                    result = QSharedPointer<Node>(new ExceptionNode("Incorrect expression!"));
+                }
+            }else{
+                result = right_expr;
+            }
         }else{
-            throw std::invalid_argument("Incorrect expression!");
+            result = left_expr;
         }
     }else{
         result = left_expr;
@@ -49,16 +63,24 @@ QSharedPointer<Node> Parser::ExpressionParse(const QVector<Token>& tokens, int& 
 QSharedPointer<Node> Parser::MultiplicationParse(const QVector<Token>& tokens, int& pos){
     QSharedPointer<Node> result;
     QSharedPointer<Node> left_expr = PowerParse(tokens, pos);
-    if(pos+1 < tokens.size() and tokens[pos+1].GetTokenType() == TokenType::kOperator2){
-        ++pos;
-        QString operator_value = tokens[pos] .GetValue();
-        QSharedPointer<Node> right_expr = MultiplicationParse(tokens, ++pos);
-        if(operator_value == "*"){
-            result = QSharedPointer<Node>(new BinaryMultiplyNode(left_expr, right_expr));
-        }else if(operator_value == "/"){
-            result = QSharedPointer<Node>(new BinaryDivideNode(left_expr, right_expr));
+    if(!left_expr->IsException()){
+        if(pos+1 < tokens.size() and tokens[pos+1].GetTokenType() == TokenType::kOperator2){
+            ++pos;
+            QString operator_value = tokens[pos] .GetValue();
+            QSharedPointer<Node> right_expr = MultiplicationParse(tokens, ++pos);
+            if(!right_expr->IsException()){
+                if(operator_value == "*"){
+                    result = QSharedPointer<Node>(new BinaryMultiplyNode(left_expr, right_expr));
+                }else if(operator_value == "/"){
+                    result = QSharedPointer<Node>(new BinaryDivideNode(left_expr, right_expr));
+                }else{
+                    result = QSharedPointer<Node>(new ExceptionNode("Incorrect expression!"));
+                }
+            }else{
+                result = right_expr;
+            }
         }else{
-            throw std::invalid_argument("Incorrect expression!");
+            result = left_expr;
         }
     }else{
         result = left_expr;
@@ -69,14 +91,22 @@ QSharedPointer<Node> Parser::MultiplicationParse(const QVector<Token>& tokens, i
 QSharedPointer<Node> Parser::PowerParse(const QVector<Token>& tokens, int& pos){
     QSharedPointer<Node> result;
     QSharedPointer<Node> left_expr = TermParse(tokens, pos);
-    if(pos+1 < tokens.size() and tokens[pos+1].GetTokenType() == TokenType::kOperator3){
-        ++pos;
-        QString operator_value = tokens[pos].GetValue();
-        QSharedPointer<Node> right_expr = PowerParse(tokens, ++pos);
-        if(operator_value == "^"){
-            result = QSharedPointer<Node>(new BinaryPowerNode(left_expr, right_expr));
+    if(!left_expr->IsException()){
+        if(pos+1 < tokens.size() and tokens[pos+1].GetTokenType() == TokenType::kOperator3){
+            ++pos;
+            QString operator_value = tokens[pos].GetValue();
+            QSharedPointer<Node> right_expr = PowerParse(tokens, ++pos);
+            if(!right_expr->IsException()){
+                if(operator_value == "^"){
+                    result = QSharedPointer<Node>(new BinaryPowerNode(left_expr, right_expr));
+                }else{
+                    result = QSharedPointer<Node>(new ExceptionNode("Incorrect expression!"));
+                }
+            }else{
+                result = right_expr;
+            }
         }else{
-            throw std::invalid_argument("Incorrect expression!");
+            result = left_expr;
         }
     }else{
         result = left_expr;
@@ -93,19 +123,31 @@ QSharedPointer<Node> Parser::TermParse(const QVector<Token>& tokens, int& pos){
     }else if(pos < tokens.size() and tokens[pos].GetTokenType() == TokenType::kOperator1){
         QString operator_value = tokens[pos].GetValue();
         QSharedPointer<Node> expr = TermParse(tokens, ++pos);
-        if(operator_value == "+"){
-            result = QSharedPointer<Node>(new UnaryPlusNode(expr));
-        }else if(operator_value == "-"){
-            result = QSharedPointer<Node>(new UnaryMinusNode(expr));
+        if(!expr->IsException()){
+            if(operator_value == "+"){
+                result = QSharedPointer<Node>(new UnaryPlusNode(expr));
+            }else if(operator_value == "-"){
+                result = QSharedPointer<Node>(new UnaryMinusNode(expr));
+            }else{
+                result = QSharedPointer<Node>(new ExceptionNode("Incorrect expression!"));
+            }
         }else{
-            throw std::invalid_argument("Incorrect expression!");
+            result = expr;
         }
     }else if(pos < tokens.size() and tokens[pos].GetTokenType() == TokenType::kInc){
         QSharedPointer<Node> expr = ExpressionWithBracketsParse(tokens, ++pos);
-        result = QSharedPointer<Node>(new IncFunctionNode(expr));
+        if(!expr->IsException()){
+            result = QSharedPointer<Node>(new IncFunctionNode(expr));
+        }else{
+            result = expr;
+        }
     }else if(pos < tokens.size() and tokens[pos].GetTokenType() == TokenType::kDec){
         QSharedPointer<Node> expr = ExpressionWithBracketsParse(tokens, ++pos);
-        result = QSharedPointer<Node>(new DecFunctionNode(expr));
+        if(!expr->IsException()){
+            result = QSharedPointer<Node>(new DecFunctionNode(expr));
+        }else{
+            result = expr;
+        }
     }else{
         result = ExpressionWithBracketsParse(tokens, pos);
     }
@@ -116,11 +158,11 @@ QSharedPointer<Node> Parser::ExpressionWithBracketsParse(const QVector<Token>& t
     QSharedPointer<Node> result;
     if(pos < tokens.size() and tokens[pos].GetTokenType() == TokenType::kLeftBracket){
         result = ExpressionParse(tokens, ++pos);
-        if(tokens[++pos].GetTokenType() != TokenType::kRightBracket){
-            throw std::invalid_argument("Incorrect expression!");
+        if(pos + 1 < tokens.size() and tokens[++pos].GetTokenType() != TokenType::kRightBracket){
+            result = QSharedPointer<Node>(new ExceptionNode("Incorrect expression!"));
         }
     }else{
-        throw std::invalid_argument("Incorrect expression!");
+        result = QSharedPointer<Node>(new ExceptionNode("Incorrect expression!"));
     }
     return result;
 }

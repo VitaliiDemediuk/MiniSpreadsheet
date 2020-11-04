@@ -4,22 +4,24 @@ BinaryPowerNode::BinaryPowerNode(QSharedPointer<Node> left_expr,
                                  QSharedPointer<Node> right_expr):
                                  BinaryOperatorNode(left_expr, right_expr) {}
 
-cpp_int BinaryPowerNode::Calculate() const{
+CalculationResult BinaryPowerNode::Calculate() const{
     return bin_pow(left_expr_->Calculate(), right_expr_->Calculate());
 }
 
-cpp_int BinaryPowerNode::bin_pow(const cpp_int& base, const cpp_int& index) const{
-    if(index == 0){
-        return 1;
-    } else if(index == 1){
+CalculationResult BinaryPowerNode::bin_pow(const CalculationResult& base, const CalculationResult& index) const{
+    if(index.GetNumber() < 0){
+        return CalculationResult(0, false, "Incorrect expression!");
+    } else if(index.GetNumber() == 0){
+        return CalculationResult(1);
+    } else if(index.GetNumber() == 1){
         return base;
-    }else if(index % 2 == 0){
-        return sqrt(bin_pow(base, index/2));
-    }else{
-        return base*bin_pow(base, index-1);
+    } else if(index.GetNumber() % 2 == 0){
+        return sqrt(bin_pow(base, index/CalculationResult(2)));
+    } else{
+        return base*bin_pow(base, index-CalculationResult(1));
     }
 }
 
-cpp_int BinaryPowerNode::sqrt(const cpp_int& base) const{
+CalculationResult BinaryPowerNode::sqrt(const CalculationResult& base) const{
     return base*base;
 }

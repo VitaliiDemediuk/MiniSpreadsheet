@@ -12,7 +12,8 @@ enum class TokenType{
     kOperator2,
     kOperator3,
     kLeftBracket,
-    kRightBracket
+    kRightBracket,
+    kInvalidToken
 };
 
 class Token

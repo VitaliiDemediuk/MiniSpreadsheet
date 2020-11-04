@@ -9,7 +9,7 @@ class BinaryPlusNode : public BinaryOperatorNode{
 public:
     explicit BinaryPlusNode(QSharedPointer<Node> left_expr,
                             QSharedPointer<Node> right_expr);
-    cpp_int Calculate() const override;
+    CalculationResult Calculate() const override;
 };
 
 #endif // BINARYPLUSNODE_H

@@ -1,6 +1,11 @@
-#include "functionnode.h"
+#include <functionnode.h>
 
-FunctionNode::FunctionNode()
-{
+#include <QString>
 
+bool FunctionNode::IsException() const{
+    return false;
+}
+
+QString FunctionNode::GetMessage() const{
+    return "OK";
 }

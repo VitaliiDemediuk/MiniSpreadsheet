@@ -6,7 +6,7 @@
 class UnaryMinusNode : public UnaryOperatorNode{
 public:
     explicit UnaryMinusNode(QSharedPointer<Node> expr);
-    cpp_int Calculate() const override;
+    CalculationResult Calculate() const override;
 };
 
 #endif // UNARYMINUSNODE_H

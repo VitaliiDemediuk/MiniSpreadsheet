@@ -17,6 +17,8 @@ SOURCES += \
     expression_nodes/binarypowernode.cpp \
     expression_nodes/cellreferencenode.cpp \
     expression_nodes/decfunctionnode.cpp \
+    expression_nodes/exceptionnode.cpp \
+    expression_nodes/functionnode.cpp \
     expression_nodes/incfunctionnode.cpp \
     expression_nodes/numbernode.cpp \
     expression_nodes/unaryminusnode.cpp \
@@ -27,6 +29,7 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     parser/parser.cpp \
+    table_model/calculationresult.cpp \
     table_model/cell.cpp \
     table_model/tablesingleton.cpp
 
@@ -39,6 +42,7 @@ HEADERS += \
     expression_nodes/binarypowernode.h \
     expression_nodes/cellreferencenode.h \
     expression_nodes/decfunctionnode.h \
+    expression_nodes/exceptionnode.h \
     expression_nodes/functionnode.h \
     expression_nodes/incfunctionnode.h \
     expression_nodes/numbernode.h \
@@ -50,6 +54,7 @@ HEADERS += \
     lexer/token.h \
     mainwindow.h \
     parser/parser.h \
+    table_model/calculationresult.h \
     table_model/cell.h \
     table_model/tablesingleton.h
 

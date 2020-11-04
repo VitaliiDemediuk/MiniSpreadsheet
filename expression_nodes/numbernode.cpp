@@ -1,16 +1,26 @@
 #include "numbernode.h"
 
+using boost::multiprecision::cpp_int;
+
 NumberNode::NumberNode(const QString& number) :
                        number_(number.toStdString()) {}
 
-cpp_int NumberNode::Calculate() const {
-    return number_;
+CalculationResult NumberNode::Calculate() const {
+    return CalculationResult(number_);
 }
 
-void NumberNode::RemoveReference(size_t row, size_t column) const{
+bool NumberNode::IsException() const{
+    return false;
+}
+
+QString NumberNode::GetMessage() const{
+    return "OK";
+}
+
+void NumberNode::RemoveReference(int row, int column) const{
     return;
 }
 
-void NumberNode::AddReference(size_t row, size_t column) const{
+void NumberNode::AddReference(int row, int column) const{
     return;
 }

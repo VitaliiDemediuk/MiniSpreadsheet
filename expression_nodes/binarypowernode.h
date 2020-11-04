@@ -9,10 +9,10 @@ class BinaryPowerNode : public BinaryOperatorNode{
 public:
     explicit BinaryPowerNode(QSharedPointer<Node> left_expr,
                              QSharedPointer<Node> right_expr);
-    cpp_int Calculate() const override;
+    CalculationResult Calculate() const override;
 public:
-    cpp_int bin_pow(const cpp_int& base, const cpp_int& index) const;
-    cpp_int sqrt(const cpp_int& base) const;
+    CalculationResult bin_pow(const CalculationResult& base, const CalculationResult& index) const;
+    CalculationResult sqrt(const CalculationResult& base) const;
 };
 
 #endif // BINARYPOWERNODE_H

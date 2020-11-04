@@ -8,9 +8,11 @@ class BinaryOperatorNode : public Node{
 public:
     explicit BinaryOperatorNode(QSharedPointer<Node> left_expr,
                        QSharedPointer<Node> right_expr);
-    virtual cpp_int Calculate() const override = 0;
-    void AddReference(size_t row, size_t column) const override;
-    void RemoveReference(size_t row, size_t column) const override;
+    virtual CalculationResult Calculate() const override = 0;
+    bool IsException() const override;
+    QString GetMessage() const override;
+    void AddReference(int row, int column) const override;
+    void RemoveReference(int row, int column) const override;
 protected:
     QSharedPointer<Node> left_expr_;
     QSharedPointer<Node> right_expr_;

@@ -50,8 +50,7 @@ TokenType Lexer::GetTokenType(const QString& token_value){
     }else if(number_reg_exp.exactMatch(token_value)){
         return TokenType::kNumber;
     }else{
-        throw std::invalid_argument(token_value.toStdString() +
-                                    " incorrect token!");
+        return TokenType::kInvalidToken;
     }
 }
 

@@ -1,21 +1,19 @@
-#ifndef NUMBERNODE_H
-#define NUMBERNODE_H
+#ifndef EXCEPTIONNODE_H
+#define EXCEPTIONNODE_H
 
 #include "node.h"
-#include <QString>
+#include "QString"
 
-#include <boost/multiprecision/cpp_int.hpp>
-
-class NumberNode : public Node{
+class ExceptionNode : public Node{
 public:
-    explicit NumberNode(const QString&);
+    explicit ExceptionNode(QString message);
     CalculationResult Calculate() const override;
     bool IsException() const override;
     QString GetMessage() const override;
     void RemoveReference(int row, int column) const override;
     void AddReference(int row, int column) const override;
 private:
-    boost::multiprecision::cpp_int number_;
+    QString message_;
 };
 
-#endif // NUMBERNODE_H
+#endif // EXCEPTIONNODE_H

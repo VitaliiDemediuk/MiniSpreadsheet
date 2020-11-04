@@ -18,25 +18,43 @@ CellReferenceNode::CellReferenceNode(const QString& cell_link): row_(0), column_
     qDebug() << row_ << ' ' << column_ << "\n";
 }
 
-cpp_int CellReferenceNode::Calculate() const{
+bool CellReferenceNode::IsException() const{
+    return false;
+}
+
+QString CellReferenceNode::GetMessage() const{
+    return "OK";
+}
+
+CalculationResult CellReferenceNode::Calculate() const{
     TableSingleton& table = TableSingleton::getInstance();
     qDebug() << "----" << "\n";
     qDebug() << row_ << ' ' << column_ << "\n";
-    qDebug() << table.GetCell(row_, column_).GetValue().str().c_str() << "\n";
-    return table.GetCell(row_, column_).GetValue();
+    qDebug() << table.GetCell(row_, column_).GetValue().GetNumber().str().c_str() << "\n";
+    auto& cell = table.GetCell(row_, column_);
+    if(cell.IsCorectCell()){
+        CalculationResult calc_res = cell.GetValue();
+        if(calc_res.IsCorrectCalculation()){
+            return calc_res;
+        }else{
+            return CalculationResult(0, false, "");
+        }
+    }else{
+        return CalculationResult(0, false, "Out of range of table!");
+    }
 }
 
-void CellReferenceNode::AddReference(size_t row, size_t column) const{
+void CellReferenceNode::AddReference(int row, int column) const{
     TableSingleton& table = TableSingleton::getInstance();
     table.GetCell(row_, column_).AddReferringCell(row, column);
 }
 
-void CellReferenceNode::RemoveReference(size_t row, size_t column) const{
+void CellReferenceNode::RemoveReference(int row, int column) const{
     TableSingleton& table = TableSingleton::getInstance();
     table.GetCell(row_, column_).RemoveReferringCell(row, column);
 }
 
-size_t CellReferenceNode::bin_pow(const size_t& base, const size_t& index) const{
+int CellReferenceNode::bin_pow(int base, int index) const{
     if(index == 0){
         return 1;
     } else if(index == 1){

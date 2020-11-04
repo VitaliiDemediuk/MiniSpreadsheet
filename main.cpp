@@ -7,6 +7,7 @@
 #include <string>
 #include "parser.h"
 #include <QSharedPointer>
+#include <exception>
 
 #include <boost/multiprecision/cpp_int.hpp>
 

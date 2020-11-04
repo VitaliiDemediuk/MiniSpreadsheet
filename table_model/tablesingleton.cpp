@@ -50,10 +50,11 @@ int TableSingleton::GetColumnCount(){
 }
 
 Cell& TableSingleton::GetCell(int row, int column){
+    static Cell incorect_cell(false);
     if(row < row_count_ and column < column_count_){
         return table_[row][column];
     }else{
-        throw std::out_of_range("Out of range of table!");
+        return incorect_cell;
     }
 }
 
@@ -112,4 +113,26 @@ void TableSingleton::ClearTable(){
     table_.clear();
     row_count_ = 0;
     column_count_ = 0;
+}
+
+bool TableSingleton::IsLastRowEmpty(){
+    bool result = true;
+    for(auto& el : table_.back()){
+        if(!el.IsEmptyCell()){
+            result = false;
+             break;
+        }
+    }
+    return result;
+}
+
+bool TableSingleton::IsLastColumnEmpty(){
+    bool result = true;
+    for(auto& el : table_){
+        if(!el.back().IsEmptyCell()){
+            result = false;
+            break;
+        }
+    }
+    return result;
 }

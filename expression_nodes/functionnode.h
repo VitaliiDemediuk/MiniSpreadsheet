@@ -5,7 +5,9 @@
 
 class FunctionNode : public Node{
 public:
-    virtual cpp_int Calculate() const = 0;
+    virtual CalculationResult Calculate() const = 0;
+    bool IsException() const override;
+    QString GetMessage() const override;
 };
 
 #endif // FUNCTIONNODE_H

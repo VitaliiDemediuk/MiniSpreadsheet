@@ -20,16 +20,18 @@ public:
     };
 
 public:
-    Cell();
+    Cell(bool is_corect_cell = true);
     QString GetText() const;
     QString GetVisibleText() const;
-    cpp_int GetValue() const;
+    CalculationResult GetValue() const;
     void ChangeText(const QString& text);
     void Recalculate();
     void AddReferringCell(int row, int column);
     void RemoveReferringCell(int row, int column);    
-
+    bool IsCorectCell();
+    bool IsEmptyCell();
 private:
+    bool is_corect_cell_ = true;
     QString text_;
     QSharedPointer<Node> tree_;
     std::set<CellCoordinates> referring_cells_;

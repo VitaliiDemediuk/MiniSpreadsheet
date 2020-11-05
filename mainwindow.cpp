@@ -37,6 +37,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     this->releaseKeyboard();
+    TableSingleton& table = TableSingleton::getInstance();
+    connect(&table, SIGNAL(cell_recalculated(int, int)), this, SLOT(refresh_cell(int, int)));
 }
 
 MainWindow::~MainWindow()
@@ -61,6 +63,7 @@ void MainWindow::on_actionAdd_row_triggered()
     int row_count = ui->tableWidget->rowCount();
     ui->tableWidget->setRowCount(row_count + 1);
     is_table_modified_ = true;
+    table.RecalculateAllTable();
 }
 
 void MainWindow::on_actionRemove_row_triggered()
@@ -96,6 +99,7 @@ void MainWindow::on_actionAdd_column_triggered()
     }
 
     ui->tableWidget->setHorizontalHeaderItem(column_count, item);
+    //table.RecalculateAllTable();
     is_table_modified_ = true;
 }
 
@@ -121,7 +125,9 @@ void MainWindow::on_tableWidget_cellChanged(int row, int column)
         TableSingleton& table = TableSingleton::getInstance();
         auto ui_cell = ui->tableWidget->item(row, column);
         auto& model_cell = table.GetCell(row, column);
+        model_cell.RemoveReference(row, column);
         model_cell.ChangeText(ui_cell->text());
+        model_cell.AddReference(row, column);
         CalculationResult calc_res = model_cell.GetValue();
         if(!calc_res.IsCorrectCalculation() and !calc_res.GetMessage().isEmpty() and can_open_error_window_){
             QMessageBox::critical(this, "Error", calc_res.GetMessage());
@@ -206,10 +212,12 @@ void MainWindow::keyPressEvent(QKeyEvent *event){
 void MainWindow::on_actionSave_as_triggered()
 {
     QString file_path = QFileDialog::getSaveFileName();
-    TableSingleton& table = TableSingleton::getInstance();
-    table.SaveTable(file_path);
-    table_file_path_ = file_path;
-    is_table_modified_ = false;
+    if(!file_path.isEmpty()){
+        TableSingleton& table = TableSingleton::getInstance();
+        table.SaveTable(file_path);
+        table_file_path_ = file_path;
+        is_table_modified_ = false;
+    }
 }
 
 void MainWindow::on_actionSave_triggered()
@@ -342,7 +350,11 @@ void MainWindow::closeEvent(QCloseEvent *event){
         int answer = DoYouWantToSave();
         if(answer == QMessageBox::Save){
             this->on_actionSave_triggered();
-            event->accept();
+            if(!is_table_modified_){
+                event->accept();
+            }else{
+                event->ignore();
+            }
         }else if(answer == QMessageBox::Discard){
             event->accept();
         }else{
@@ -372,4 +384,15 @@ bool MainWindow::DoYouWantToDelete(QString what){
     msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     msgBox.setDefaultButton(QMessageBox::No);
     return msgBox.exec() == QMessageBox::Yes;
+}
+
+void MainWindow::refresh_cell(int row, int column){
+    TableSingleton& table = TableSingleton::getInstance();
+    auto ui_cell = ui->tableWidget->item(row, column);
+    auto& model_cell = table.GetCell(row, column);
+    bool old_hpctm = have_permission_change_table_model_;
+    have_permission_change_table_model_ = false;
+    ui_cell->setText(model_cell.GetVisibleText());
+    have_permission_change_table_model_ = old_hpctm;
+    RefreshFormulaLine();
 }

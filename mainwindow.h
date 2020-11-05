@@ -12,6 +12,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+    void closeEvent(QCloseEvent *event) override;
     MainWindow(QWidget *parent = nullptr);
     void PrepareTable();
     ~MainWindow();
@@ -43,9 +44,9 @@ private slots:
 
     void on_actionSave_triggered();
 
-    void closeEvent(QCloseEvent *event) override;
-
     void on_actionExit_triggered();
+
+    void refresh_cell(int row, int column);
 
 private:
     Ui::MainWindow *ui;

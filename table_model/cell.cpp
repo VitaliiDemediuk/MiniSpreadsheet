@@ -56,6 +56,7 @@ void Cell::ChangeText(const QString& text){
     }else{
         tree_ = QSharedPointer<Node>(new NumberNode(0));
     }
+    Recalculate();
     qDebug() << text_ << '\n';
 }
 
@@ -80,9 +81,22 @@ bool Cell::IsEmptyCell(){
     return text_.isEmpty();
 }
 
-void Cell::Recalculate(){
+void Cell::Recalculate(int row, int column){
     TableSingleton& table = TableSingleton::getInstance();
-    for(auto& el : referring_cells_){
-        table.GetCell(el.GetRow(), el.GetColumn()).Recalculate();
+    if(row >= 0 and column >= 0){
+        emit table.cell_recalculated(row, column);
     }
+    for(auto& el : referring_cells_){
+        auto& cell = table.GetCell(el.GetRow(), el.GetColumn());
+        cell.Recalculate(el.GetRow(), el.GetColumn());
+    }
+}
+
+
+void Cell::AddReference(int row, int column){
+    tree_->AddReference(row, column);
+}
+
+void Cell::RemoveReference(int row, int column){
+    tree_->RemoveReference(row, column);
 }

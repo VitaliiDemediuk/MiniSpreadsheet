@@ -27,6 +27,10 @@ void TableSingleton::AddColumn(){
 
 void TableSingleton::RemoveRow(){
     if(row_count_ > 0){
+        for(int i= 0; i < column_count_; ++i){
+            table_.back()[i].RemoveReference(row_count_-1, i);
+            table_.back()[i].ChangeText("#####");
+        }
         table_.pop_back();
         --row_count_;
     }
@@ -35,6 +39,8 @@ void TableSingleton::RemoveRow(){
 void TableSingleton::RemoveColumn(){
     if(column_count_ > 0){
         for(int i = 0; i < row_count_; ++i){
+            table_[i].back().RemoveReference(i, column_count_-1);
+            table_[i].back().ChangeText("#####");
             table_[i].pop_back();
         }
         --column_count_;
@@ -135,4 +141,15 @@ bool TableSingleton::IsLastColumnEmpty(){
         }
     }
     return result;
+}
+
+void TableSingleton::RecalculateAllTable(){
+    for(int i = 0; i < row_count_; ++i){
+        for(int j = 0; j < column_count_; ++j){
+            if(!table_[i][j].IsEmptyCell()){
+                table_[i][j].Recalculate(i, j);
+            }
+        }
+    }
+
 }

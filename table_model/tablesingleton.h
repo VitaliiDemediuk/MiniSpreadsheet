@@ -4,7 +4,9 @@
 #include "cell.h"
 #include <QVector>
 
-class TableSingleton{
+class TableSingleton : public QObject {
+    Q_OBJECT
+
 public:
     static TableSingleton& getInstance();
     void AddRow();
@@ -19,8 +21,13 @@ public:
     void ClearTable();
     bool IsLastRowEmpty();
     bool IsLastColumnEmpty();
+    void RecalculateAllTable();
     TableSingleton(const TableSingleton&) = delete;
     void operator=(TableSingleton const& ) = delete;
+
+signals:
+    void cell_recalculated(int row, int column);
+
 private:
     TableSingleton();
 

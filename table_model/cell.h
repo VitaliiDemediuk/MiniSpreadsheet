@@ -25,11 +25,13 @@ public:
     QString GetVisibleText() const;
     CalculationResult GetValue() const;
     void ChangeText(const QString& text);
-    void Recalculate();
+    void Recalculate(int row = -1, int column = -1);
     void AddReferringCell(int row, int column);
     void RemoveReferringCell(int row, int column);    
     bool IsCorectCell();
     bool IsEmptyCell();
+    void AddReference(int row, int column);
+    void RemoveReference(int row, int column);
 private:
     bool is_corect_cell_ = true;
     QString text_;

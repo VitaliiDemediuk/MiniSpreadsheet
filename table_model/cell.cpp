@@ -32,12 +32,16 @@ QString Cell::GetText() const{
     return text_;
 }
 
-QString Cell::GetVisibleText() const{
+QString Cell::GetVisibleText(){
     QString result;
     if(!text_.isEmpty()){
+        this->GoInThisCell();
         CalculationResult calc_res = tree_->Calculate();
+        this->GoOutThisCell();
         if(calc_res.IsCorrectCalculation()){
+            this->GoInThisCell();
             result = QString(tree_->Calculate().GetNumber().str().c_str());
+            this->GoOutThisCell();
         }else{
             result = "#####";
         }
@@ -45,8 +49,11 @@ QString Cell::GetVisibleText() const{
     return result;
 }
 
-CalculationResult Cell::GetValue() const{
-    return (text_.isEmpty() ? CalculationResult(0) : tree_->Calculate());
+CalculationResult Cell::GetValue(){
+    this->GoInThisCell();
+    auto result = (text_.isEmpty() ? CalculationResult(0) : tree_->Calculate());
+    this->GoOutThisCell();
+    return result;
 }
 
 void Cell::ChangeText(const QString& text){
@@ -99,4 +106,16 @@ void Cell::AddReference(int row, int column){
 
 void Cell::RemoveReference(int row, int column){
     tree_->RemoveReference(row, column);
+}
+
+bool Cell::WasInThisCell(){
+    return !(was_in_this_cell_ == 0);
+}
+
+void Cell::GoInThisCell(){
+    ++was_in_this_cell_;
+}
+
+void Cell::GoOutThisCell(){
+    --was_in_this_cell_;
 }

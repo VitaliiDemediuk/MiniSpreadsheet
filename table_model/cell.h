@@ -22,18 +22,21 @@ public:
 public:
     Cell(bool is_corect_cell = true);
     QString GetText() const;
-    QString GetVisibleText() const;
-    CalculationResult GetValue() const;
+    QString GetVisibleText();
+    CalculationResult GetValue();
     void ChangeText(const QString& text);
     void Recalculate(int row = -1, int column = -1);
     void AddReferringCell(int row, int column);
     void RemoveReferringCell(int row, int column);    
     bool IsCorectCell();
     bool IsEmptyCell();
-    void AddReference(int row, int column);
+    bool WasInThisCell();
+    void GoInThisCell();
+    void GoOutThisCell();    void AddReference(int row, int column);
     void RemoveReference(int row, int column);
 private:
     bool is_corect_cell_ = true;
+    int was_in_this_cell_ = 0;
     QString text_;
     QSharedPointer<Node> tree_;
     std::set<CellCoordinates> referring_cells_;

@@ -28,19 +28,21 @@ QString CellReferenceNode::GetMessage() const{
 
 CalculationResult CellReferenceNode::Calculate() const{
     TableSingleton& table = TableSingleton::getInstance();
-    qDebug() << "----" << "\n";
-    qDebug() << row_ << ' ' << column_ << "\n";
-    qDebug() << table.GetCell(row_, column_).GetValue().GetNumber().str().c_str() << "\n";
     auto& cell = table.GetCell(row_, column_);
-    if(cell.IsCorectCell()){
-        CalculationResult calc_res = cell.GetValue();
-        if(calc_res.IsCorrectCalculation()){
-            return calc_res;
+    if(!cell.WasInThisCell()){
+        if(cell.IsCorectCell()){
+
+            CalculationResult calc_res = cell.GetValue();
+            if(calc_res.GetMessage() == "Loop!" or calc_res.IsCorrectCalculation()){
+                return calc_res;
+            }else{
+                return CalculationResult(0, false, "");
+            }
         }else{
-            return CalculationResult(0, false, "");
+            return CalculationResult(0, false, "Out of range of table!");
         }
     }else{
-        return CalculationResult(0, false, "Out of range of table!");
+        return CalculationResult(0, false, "Loop!");
     }
 }
 

@@ -96,3 +96,13 @@ CalculationResult CalculationResult::operator-(){
 CalculationResult CalculationResult::operator+(){
     return CalculationResult(this->GetNumber());
 }
+
+bool CalculationResult::operator== (const CalculationResult& right) const{
+    if(!this->is_correct_calculation_){
+        return !right.is_correct_calculation_;
+    }else if(!right.is_correct_calculation_){
+        return !this->is_correct_calculation_;
+    }else{
+        return this->number_ == right.number_;
+    }
+}

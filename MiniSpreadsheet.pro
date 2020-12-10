@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui testlib
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -31,7 +31,10 @@ SOURCES += \
     parser/parser.cpp \
     table_model/calculationresult.cpp \
     table_model/cell.cpp \
-    table_model/tablesingleton.cpp
+    table_model/tablesingleton.cpp \
+    tests/test_cell_getvalue.cpp \
+    tests/test_cell_getvisibletext.cpp \
+    tests/test_lexer.cpp
 
 HEADERS += \
     expression_nodes/binarydividenode.h \
@@ -56,7 +59,10 @@ HEADERS += \
     parser/parser.h \
     table_model/calculationresult.h \
     table_model/cell.h \
-    table_model/tablesingleton.h
+    table_model/tablesingleton.h \
+    tests/test_cell_getvalue.h \
+    tests/test_cell_getvisibletext.h \
+    tests/test_lexer.h
 
 FORMS += \
     mainwindow.ui
@@ -73,4 +79,5 @@ INCLUDEPATH += \
     lexer \
     expression_nodes \
     parser \
-    table_model
+    table_model \
+    tests

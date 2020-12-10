@@ -32,7 +32,8 @@ public:
     bool IsEmptyCell();
     bool WasInThisCell();
     void GoInThisCell();
-    void GoOutThisCell();    void AddReference(int row, int column);
+    void GoOutThisCell();
+    void AddReference(int row, int column);
     void RemoveReference(int row, int column);
 private:
     bool is_corect_cell_ = true;

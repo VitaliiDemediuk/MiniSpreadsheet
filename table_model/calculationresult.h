@@ -20,6 +20,7 @@ public:
     CalculationResult& operator--();
     CalculationResult operator-();
     CalculationResult operator+();
+    bool operator== (const CalculationResult& right) const;
 private:
     boost::multiprecision::cpp_int number_;
     bool is_correct_calculation_;

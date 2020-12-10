@@ -11,8 +11,15 @@ QVector<Token> Lexer::GetTokens(const QString& line){
         if(IsWhitespace(ch) or IsBracket(ch) or IsOperator(ch)){
             if(!token_value.isEmpty()){
                 TokenType token_type = GetTokenType(token_value);
-                tokens.append(Token(token_type,
-                              std::move(token_value)));
+                if(token_type == TokenType::kInvalidToken){
+                    tokens.clear();
+                    token_value.clear();
+                    tokens.append(Token(TokenType::kInvalidToken, ""));
+                    break;
+                }else{
+                    tokens.append(Token(token_type,
+                                  std::move(token_value)));
+                }
             }
             if(ch == '('){
                 tokens.append(Token(TokenType::kLeftBracket, ch));
@@ -25,15 +32,19 @@ QVector<Token> Lexer::GetTokens(const QString& line){
             }else if(IsOperator3(ch)){
                 tokens.append(Token(TokenType::kOperator3, ch));
             }
-
         }else{
             token_value.append(ch);
         }
     }
     if(!token_value.isEmpty()){
         TokenType token_type = GetTokenType(token_value);
-        tokens.append(Token(token_type,
-                      std::move(token_value)));
+        if(token_type == TokenType::kInvalidToken){
+            tokens.clear();
+            tokens.append(Token(TokenType::kInvalidToken, ""));
+        }else{
+            tokens.append(Token(token_type,
+                          std::move(token_value)));
+        }
     }
     return tokens;
 }

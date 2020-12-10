@@ -22,6 +22,7 @@ public:
     explicit Token(TokenType type, QString value);
     TokenType GetTokenType() const;
     const QString& GetValue() const;
+    bool operator== (const Token& right) const;
 private:
     TokenType token_type_;
     QString value_;
